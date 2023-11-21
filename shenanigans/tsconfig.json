@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "lib": [
+      "esnext"
+    ],
+    "rootDir": "./src",
+    "moduleResolution": "node",
+    "types": [
+      "typed-factorio/runtime",
+      "typed-factorio/prototype",
+      "typed-factorio/settings",
+      "@typescript-to-lua/language-extensions"
+    ],
+    "strict": true,
+    "outDir": "./build",
+    "sourceMap": false
+  },
+  "tstl": {
+    "luaTarget": "JIT",
+    "noHeader": true,
+    "noImplicitSelf": true
+  },
+  "include": [
+    "./src"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "dimavas-shenanigans",
+  "license": "MIT",
+  "scripts": {
+    "relink": "del-cli ./build && lnk public/info.json build",
+    "build": "tstl",
+    "dev": "tsx scripts/prebuild && tstl --watch"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.10",
+    "@typescript-to-lua/language-extensions": "latest",
+    "fs-jetpack": "latest",
+    "lua-types": "latest",
+    "tsx": "latest",
+    "typed-factorio": "latest",
+    "typescript": "latest",
+    "typescript-to-lua": "latest"
+  }
+}

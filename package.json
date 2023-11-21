@@ -1,0 +1,15 @@
+{
+  "name": "@dimava/factorio",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "",
+  "author": "Dimava",
+  "license": "ISC",
+  "keywords": [],
+  "scripts": {
+    "lint": "eslint --cache --fix"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "latest"
+  }
+}
