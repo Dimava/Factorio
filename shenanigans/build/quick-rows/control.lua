@@ -4,14 +4,27 @@ local __TS__ArrayMap = ____lualib.__TS__ArrayMap
 local __TS__ArrayFrom = ____lualib.__TS__ArrayFrom
 local __TS__ArrayFlat = ____lualib.__TS__ArrayFlat
 local ____exports = {}
-local change_bp_count, bp_size, log
+local reassign_stack_if_needed, change_bp_count, bp_size
+function reassign_stack_if_needed(event)
+    local player = game.get_player(event.player_index)
+    if not (player and player.is_cursor_blueprint()) then
+        return
+    end
+    local bp = player.cursor_stack
+    if not bp.label then
+        global.bp_count = 1
+        global.original_bp = bp.get_blueprint_entities()
+    end
+end
 function change_bp_count(event, diff)
-    local p = game.get_player(event.player_index)
-    local bp = p and p.cursor_stack
-    global.bp_count = global.bp_count + diff
+    local player = game.get_player(event.player_index)
+    if not (player and player.is_cursor_blueprint()) or not global.bp_count or not global.original_bp then
+        return
+    end
+    local bp = player.cursor_stack
+    global.bp_count = math.max(1, diff + global.bp_count)
     bp.label = "x" .. tostring(global.bp_count)
     local size = bp_size(global.original_bp)
-    log(size)
     local delta = {x = not global.bp_direction and size.size.x or 0, y = global.bp_direction and size.size.y or 0}
     local moved = __TS__ArrayFlat(__TS__ArrayFrom(
         {length = global.bp_count},
@@ -46,33 +59,24 @@ function bp_size(entities)
     )))
     return {top_left = {x = x1, y = y1}, bottom_right = {x = x2, y = y2}, center = {x = (x1 + x2) / 2, y = (y1 + y2) / 2}, size = {x = x2 - x1, y = y2 - y1}}
 end
-function log(o)
-    game.print(serpent.block(o))
-end
 script.on_event(
     "dish-PAGEUP",
     function(event)
-        game.print("dish-PAGEUP")
-        local p = game.get_player(event.player_index)
-        local bp = p and p.cursor_stack
-        if not bp.label then
-            global.bp_count = 1
-            global.original_bp = bp.get_blueprint_entities()
-        end
+        reassign_stack_if_needed(event)
         change_bp_count(event, 1)
     end
 )
 script.on_event(
     "dish-PAGEDOWN",
     function(event)
-        game.print("dish-PAGEDOWN")
+        reassign_stack_if_needed(event)
         change_bp_count(event, -1)
     end
 )
 script.on_event(
     "dish-SHIFT-R",
     function(event)
-        game.print("dish-SHIFT-R")
+        reassign_stack_if_needed(event)
         global.bp_direction = not global.bp_direction
         change_bp_count(event, 0)
     end
