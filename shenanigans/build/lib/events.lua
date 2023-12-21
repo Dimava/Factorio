@@ -15,26 +15,31 @@ function ScriptEmitter.prototype.____constructor(self)
     self.listeners = {}
 end
 function ScriptEmitter.prototype.on(self, event, handler)
-    local eventId = defines.events["on_" .. event] or event
-    local oldList = self.listeners[event]
-    if not oldList then
-        self.listeners[event] = {handler}
-        script.on_event(eventId, handler)
+    local ____temp_0
+    if type(event) ~= "string" then
+        ____temp_0 = event
     else
-        oldList[#oldList + 1] = handler
-        script.on_event(
-            eventId,
-            function(event)
-                do
-                    local i = 0
-                    while i < #oldList do
-                        oldList[i + 1](event)
-                        i = i + 1
-                    end
+        ____temp_0 = defines.events["on_" .. event] or defines.events[event] or event
+    end
+    local eventId = ____temp_0
+    local ____self_listeners_1, ____event_2 = self.listeners, event
+    if ____self_listeners_1[____event_2] == nil then
+        ____self_listeners_1[____event_2] = {}
+    end
+    local list = self.listeners[event]
+    list[#list + 1] = handler
+    script.on_event(
+        eventId,
+        function(ev)
+            do
+                local i = 0
+                while i < #list do
+                    list[i + 1](ev)
+                    i = i + 1
                 end
             end
-        )
-    end
+        end
+    )
 end
 function ScriptEmitter.prototype.on_custom(self, event, listener)
     return self:on(event, listener)

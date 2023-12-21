@@ -1,4 +1,5 @@
 import type { BlueprintEntity, CustomInputEvent } from 'factorio:runtime'
+import { Script } from '../lib/events'
 
 declare const global: {
   original_bp: BlueprintEntity[]
@@ -6,17 +7,17 @@ declare const global: {
   bp_direction: boolean
 }
 
-script.on_event('dish-PAGEUP', (event) => {
+Script.on_custom('dish-PAGEUP', (event) => {
   reassign_stack_if_needed(event)
   change_bp_count(event, 1)
 })
 
-script.on_event('dish-PAGEDOWN', (event) => {
+Script.on_custom('dish-PAGEDOWN', (event) => {
   reassign_stack_if_needed(event)
   change_bp_count(event, -1)
 })
 
-script.on_event('dish-SHIFT-R', (event) => {
+Script.on_custom('dish-SHIFT-R', (event) => {
   reassign_stack_if_needed(event)
   global.bp_direction = !global.bp_direction
   change_bp_count(event, 0)

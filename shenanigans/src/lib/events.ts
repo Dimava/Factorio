@@ -1,6 +1,6 @@
-/* eslint-disable ts/no-unsafe-argument */
 import type { CustomInputPrototype } from 'factorio:prototype'
 import type { CustomInputEvent, EventId, NthTickEventData } from 'factorio:runtime'
+import { logs } from './misc'
 
 export type eventMap = {
   [K in keyof typeof defines.events
@@ -18,19 +18,17 @@ class ScriptEmitter {
     event: E,
     handler: (data: eventMap[E]['_eventData']) => void,
   ) {
-    const eventId = defines.events[`on_${event}` as 'on_tick'] ?? event as never as EventId<any>
-    const oldList = this.listeners[event]
-    if (!oldList) {
-      this.listeners[event] = [handler]
-      script.on_event(eventId, handler as any)
-    }
-    else {
-      oldList.push(handler)
-      script.on_event(eventId, (event) => {
-        for (let i = 0; i < oldList.length; i++)
-          oldList[i](event)
-      })
-    }
+    const eventId = typeof event !== 'string'
+      ? event
+      : defines.events[`on_${event}` as 'on_tick']
+        ?? defines.events[event as 'on_tick']
+        ?? event as never as EventId<any>
+    const list = this.listeners[event] ??= [] as never
+    list.push(handler)
+    script.on_event(eventId, (ev) => {
+      for (let i = 0; i < list.length; i++)
+        list[i](ev)
+    })
   }
 
   on_custom(event: customEventName, listener: (data: CustomInputEvent) => void) {

@@ -5,6 +5,8 @@ local __TS__ArrayFrom = ____lualib.__TS__ArrayFrom
 local __TS__ArrayFlat = ____lualib.__TS__ArrayFlat
 local ____exports = {}
 local reassign_stack_if_needed, change_bp_count, bp_size
+local ____events = require("lib.events")
+local Script = ____events.Script
 function reassign_stack_if_needed(event)
     local player = game.get_player(event.player_index)
     if not (player and player.is_cursor_blueprint()) then
@@ -59,21 +61,21 @@ function bp_size(entities)
     )))
     return {top_left = {x = x1, y = y1}, bottom_right = {x = x2, y = y2}, center = {x = (x1 + x2) / 2, y = (y1 + y2) / 2}, size = {x = x2 - x1, y = y2 - y1}}
 end
-script.on_event(
+Script:on_custom(
     "dish-PAGEUP",
     function(event)
         reassign_stack_if_needed(event)
         change_bp_count(event, 1)
     end
 )
-script.on_event(
+Script:on_custom(
     "dish-PAGEDOWN",
     function(event)
         reassign_stack_if_needed(event)
         change_bp_count(event, -1)
     end
 )
-script.on_event(
+Script:on_custom(
     "dish-SHIFT-R",
     function(event)
         reassign_stack_if_needed(event)

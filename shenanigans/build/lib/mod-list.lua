@@ -1,5 +1,6 @@
 local ____exports = {}
 ____exports.modList = {
+    "dupebox",
     "kruise-kontrol",
     "lib",
     "midpipe",

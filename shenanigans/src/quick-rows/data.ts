@@ -1,19 +1,21 @@
 import type { CustomInputPrototype } from 'factorio:prototype'
+import { addCustomInputs } from '../lib/events'
 
-data.extend<CustomInputPrototype>([{
-  type: 'custom-input',
-  key_sequence: 'PAGEUP',
+declare global {
+  interface CustomEventMap {
+    'dish-PAGEUP': true
+    'dish-PAGEDOWN': true
+    'dish-SHIFT-R': true
+  }
+}
+
+addCustomInputs([{
   name: 'dish-PAGEUP',
-}])
-
-data.extend<CustomInputPrototype>([{
-  type: 'custom-input',
-  key_sequence: 'PAGEDOWN',
+  key_sequence: 'PAGEUP',
+}, {
   name: 'dish-PAGEDOWN',
-}])
-
-data.extend<CustomInputPrototype>([{
-  type: 'custom-input',
-  key_sequence: 'SHIFT + R',
+  key_sequence: 'PAGEDOWN',
+}, {
   name: 'dish-SHIFT-R',
+  key_sequence: 'SHIFT + R',
 }])

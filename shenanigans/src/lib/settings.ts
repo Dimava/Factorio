@@ -8,7 +8,7 @@ for (const mod of modList) {
   data.extend<BoolSettingDefinition>([{
     type: 'bool-setting',
     name: `dish-enable-${mod}`,
-    default_value: false,
+    default_value: true,
     setting_type: 'startup',
   }])
 }

@@ -1,5 +1,5 @@
 local ____exports = {}
-data:extend({{type = "custom-input", key_sequence = "PAGEUP", name = "dish-PAGEUP"}})
-data:extend({{type = "custom-input", key_sequence = "PAGEDOWN", name = "dish-PAGEDOWN"}})
-data:extend({{type = "custom-input", key_sequence = "SHIFT + R", name = "dish-SHIFT-R"}})
+local ____events = require("lib.events")
+local addCustomInputs = ____events.addCustomInputs
+addCustomInputs({{name = "dish-PAGEUP", key_sequence = "PAGEUP"}, {name = "dish-PAGEDOWN", key_sequence = "PAGEDOWN"}, {name = "dish-SHIFT-R", key_sequence = "SHIFT + R"}})
 return ____exports

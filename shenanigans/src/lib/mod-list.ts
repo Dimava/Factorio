@@ -1,4 +1,5 @@
 export const modList = [
+  'dupebox',
   'kruise-kontrol',
   'lib',
   'midpipe',
