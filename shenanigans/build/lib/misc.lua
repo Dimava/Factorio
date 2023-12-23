@@ -9,7 +9,16 @@ function ____exports.logs(...)
     game.print(table.concat(
         __TS__ArrayMap(
             a,
-            function(____, e) return type(e) == "string" and e or serpent.line(e) end
+            function(____, e)
+                if type(e) == "string" then
+                    return e
+                end
+                if type(e) == "table" and e.object_name ~= nil then
+                    local v = e
+                    return ((((v.object_name .. "{name:") .. v.name) .. ",pos:") .. serpent.line(v.position)) .. "}"
+                end
+                return serpent.line(e)
+            end
         ),
         " "
     ))
@@ -48,6 +57,47 @@ function Pos.prototype.add(self, x, y)
     end
     return __TS__New(____exports.Pos, self.x + x.x, self.y + x.y)
 end
+function Pos.prototype.sub(self, x, y)
+    if type(x) == "number" then
+        return __TS__New(____exports.Pos, self.x - x, self.y - y)
+    end
+    return __TS__New(____exports.Pos, self.x - x.x, self.y - x.y)
+end
+function Pos.prototype.setX(self, x)
+    return __TS__New(
+        ____exports.Pos,
+        type(x) == "number" and x or x.x,
+        self.y
+    )
+end
+function Pos.prototype.setY(self, y)
+    return __TS__New(
+        ____exports.Pos,
+        self.x,
+        type(y) == "number" and y or y.y
+    )
+end
+function Pos.prototype.round(self)
+    return __TS__New(
+        ____exports.Pos,
+        math.floor(self.x + 0.5),
+        math.floor(self.y + 0.5)
+    )
+end
+function Pos.prototype.floor(self)
+    return __TS__New(
+        ____exports.Pos,
+        math.floor(self.x),
+        math.floor(self.y)
+    )
+end
+function Pos.prototype.ceil(self)
+    return __TS__New(
+        ____exports.Pos,
+        math.ceil(self.x),
+        math.ceil(self.y)
+    )
+end
 __TS__ObjectDefineProperty(
     Pos,
     "north",
@@ -55,4 +105,15 @@ __TS__ObjectDefineProperty(
         return __TS__New(____exports.Pos, 0, -1)
     end}
 )
+function ____exports.range(min, max)
+    local a = {}
+    do
+        local x = min
+        while x <= max do
+            a[#a + 1] = x
+            x = x + 1
+        end
+    end
+    return a
+end
 return ____exports

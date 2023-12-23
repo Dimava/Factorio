@@ -1,8 +1,20 @@
+import type { LuaControl, LuaEntity } from 'factorio:runtime'
+
 export function logs(...a: any[]) {
-  game.print(a.map(e => typeof e === 'string' ? e : serpent.line(e)).join(' '))
+  game.print(a.map((e) => {
+    if (typeof e === 'string')
+      return e
+    if (type(e) === 'table' && 'object_name' in e) {
+      const v = e as LuaEntity
+      return `${v.object_name}{name:${v.name},pos:${serpent.line(v.position)}}`
+    }
+    return serpent.line(e)
+  }).join(' '))
 }
 
-interface PosLike { readonly x: number; readonly y: number }
+declare global {
+  interface PosLike { readonly x: number; readonly y: number }
+}
 export class Pos {
   x: number
   y: number
@@ -36,7 +48,45 @@ export class Pos {
     return new Pos(this.x + x.x, this.y + x.y)
   }
 
+  sub(x: number, y: number): Pos
+  sub(pos: PosLike): Pos
+  sub(x: number | PosLike, y?: number): Pos {
+    if (typeof x === 'number')
+      return new Pos(this.x - x, this.y - y!)
+    return new Pos(this.x - x.x, this.y - x.y)
+  }
+
+  setX(x: number): Pos
+  setX(pos: PosLike): Pos
+  setX(x: number | PosLike): Pos {
+    return new Pos(typeof x === 'number' ? x : x.x, this.y)
+  }
+
+  setY(y: number): Pos
+  setY(pos: PosLike): Pos
+  setY(y: number | PosLike): Pos {
+    return new Pos(this.x, typeof y === 'number' ? y : y.y)
+  }
+
+  round(): Pos {
+    return new Pos(Math.round(this.x), Math.round(this.y))
+  }
+
+  floor(): Pos {
+    return new Pos(Math.floor(this.x), Math.floor(this.y))
+  }
+
+  ceil(): Pos {
+    return new Pos(Math.ceil(this.x), Math.ceil(this.y))
+  }
+
   static get north() {
     return new Pos(0, -1)
   }
+}
+
+export function range(min: number, max: number): number[] {
+  const a = []
+  for (let x = min; x <= max; x++) a.push(x)
+  return a
 }
