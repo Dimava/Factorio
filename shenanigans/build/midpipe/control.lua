@@ -1,26 +1,20 @@
 local ____lualib = require("lualib_bundle")
 local __TS__ArrayFind = ____lualib.__TS__ArrayFind
 local ____exports = {}
-local log
 local ____lib = require("lib.index")
 local Script = ____lib.Script
-function log(s)
-    game.print(serpent.line(s))
-end
+local ____misc = require("lib.misc")
+local Pos = ____misc.Pos
+local logs = ____misc.logs
 Script:on(
     "built_entity",
     function(event)
-        event.created_entity.clone({position = {x = event.created_entity.position.x, y = event.created_entity.position.y - 8}})
-        game.print(event.created_entity.name)
-        local ghost = event.created_entity.name == "entity-ghost"
-        local uname = ghost and event.created_entity.ghost_name or event.created_entity.name
-        local lookup = global.pipe_lookup[uname]
-        log({ghost = ghost, uname = uname, lookup = lookup})
+        return
     end
 )
 local function rebuild_lookup()
     local recipes = game.get_filtered_recipe_prototypes({{filter = "has-product-item", elem_filters = {{filter = "place-result", elem_filters = {{filter = "type", type = "pipe-to-ground"}}}}}, {mode = "and", filter = "has-ingredient-item", elem_filters = {{filter = "place-result", elem_filters = {{filter = "type", type = "pipe"}}}}}})
-    local function itemNameToEntoty(name)
+    local function itemNameToEntity(name)
         local ____opt_0 = game.item_prototypes[name].place_result
         local item = ____opt_0 and ____opt_0.name
         local ____temp_2
@@ -37,28 +31,29 @@ local function rebuild_lookup()
             local pipe = __TS__ArrayFind(
                 rec.ingredients,
                 function(____, e)
-                    local ____opt_3 = itemNameToEntoty(e.name)
+                    local ____opt_3 = itemNameToEntity(e.name)
                     return (____opt_3 and ____opt_3.type) == "pipe"
                 end
             )
             local upipe = __TS__ArrayFind(
                 rec.products,
                 function(____, e)
-                    local ____opt_5 = itemNameToEntoty(e.name)
+                    local ____opt_5 = itemNameToEntity(e.name)
                     return (____opt_5 and ____opt_5.type) == "pipe-to-ground"
                 end
             )
             if not pipe or not upipe then
-                goto __continue5
+                goto __continue8
             end
-            global.pipe_lookup[itemNameToEntoty(upipe.name).name] = {
-                pipe = itemNameToEntoty(pipe.name).name,
+            global.pipe_lookup[itemNameToEntity(upipe.name).name] = {
+                pipe = itemNameToEntity(pipe.name).name,
                 pipe_item = pipe.name,
-                upipe = itemNameToEntoty(upipe.name).name
+                upipe = itemNameToEntity(upipe.name).name
             }
         end
-        ::__continue5::
+        ::__continue8::
     end
+    logs(global.pipe_lookup)
 end
 script.on_init(rebuild_lookup)
 script.on_configuration_changed(rebuild_lookup)

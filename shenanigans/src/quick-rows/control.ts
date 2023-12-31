@@ -1,6 +1,5 @@
-/* eslint-disable ts/no-non-null-asserted-optional-chain */
-
 import type { BlueprintEntity, CustomInputEvent } from 'factorio:runtime'
+import { Script } from '../lib/events'
 
 declare const global: {
   original_bp: BlueprintEntity[]
@@ -8,37 +7,43 @@ declare const global: {
   bp_direction: boolean
 }
 
-script.on_event('dish-PAGEUP', (event) => {
-  game.print('dish-PAGEUP')
-
-  const p = game.get_player(event.player_index)
-  const bp = p?.cursor_stack!
-  if (!bp.label) {
-    global.bp_count = 1
-    global.original_bp = bp.get_blueprint_entities()!
-  }
+Script.on_custom('dish-PAGEUP', (event) => {
+  reassign_stack_if_needed(event)
   change_bp_count(event, 1)
 })
 
-script.on_event('dish-PAGEDOWN', (event) => {
-  game.print('dish-PAGEDOWN')
+Script.on_custom('dish-PAGEDOWN', (event) => {
+  reassign_stack_if_needed(event)
   change_bp_count(event, -1)
 })
 
-script.on_event('dish-SHIFT-R', (event) => {
-  game.print('dish-SHIFT-R')
+Script.on_custom('dish-SHIFT-R', (event) => {
+  reassign_stack_if_needed(event)
   global.bp_direction = !global.bp_direction
   change_bp_count(event, 0)
 })
 
+function reassign_stack_if_needed(event: CustomInputEvent) {
+  const player = game.get_player(event.player_index)
+  if (!player?.is_cursor_blueprint())
+    return
+  const bp = player.cursor_stack!
+  if (!bp.label) {
+    global.bp_count = 1
+    global.original_bp = bp.get_blueprint_entities()!
+  }
+}
+
 function change_bp_count(event: CustomInputEvent, diff: number) {
-  const p = game.get_player(event.player_index)
-  const bp = p?.cursor_stack!
-  global.bp_count += diff
+  const player = game.get_player(event.player_index)
+  if (!player?.is_cursor_blueprint() || !global.bp_count || !global.original_bp)
+    return
+  const bp = player.cursor_stack!
+  global.bp_count = Math.max(1, diff + global.bp_count)
+
   bp.label = `x${global.bp_count}`
 
   const size = bp_size(global.original_bp)
-  log(size)
   const delta = {
     x: !global.bp_direction ? size.size.x : 0,
     y: global.bp_direction ? size.size.y : 0,
@@ -68,8 +73,4 @@ function bp_size(entities: BlueprintEntity[]) {
     center: { x: (x1 + x2) / 2, y: (y1 + y2) / 2 },
     size: { x: x2 - x1, y: y2 - y1 },
   } satisfies Record<string, { x: number; y: number }>
-}
-
-function log(o: any) {
-  game.print(serpent.block(o))
 }

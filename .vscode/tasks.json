@@ -1,0 +1,16 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "npm",
+      "script": "dev",
+      "path": "shenanigans",
+      "problemMatcher": [],
+      "label": "npm: dev - shenanigans",
+      "detail": "tsx scripts/prebuild && tstl --watch",
+      "runOptions": {
+        "runOn": "folderOpen"
+      }
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 {
-  "name": "dimavas-shenanigans",
+  "name": "dish",
   "license": "MIT",
   "scripts": {
     "relink": "del-cli ./build && lnk public/info.json build",
