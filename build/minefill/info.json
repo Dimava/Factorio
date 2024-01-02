@@ -1,7 +1,7 @@
 {
-  "name": "dish",
+  "name": "dish-minefill",
   "version": "0.0.1",
-  "title": "dimavas-shenanigans",
+  "title": "dimavas-shenanigans: minefill",
   "author": "dimava",
   "factorio_version": "1.1.100",
   "dependencies": []
