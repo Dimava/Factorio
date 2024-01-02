@@ -1,4 +1,3 @@
-import type { CustomInputPrototype } from 'factorio:prototype'
 import { addCustomInputs } from '../lib/events'
 
 declare global {

@@ -1,4 +1,3 @@
-import { LuaEntity } from 'factorio:runtime'
 import { Script } from '../lib'
 import { Pos, logs } from '../lib/misc'
 
@@ -7,7 +6,7 @@ declare const global: {
 }
 
 Script.on('built_entity', (event) => {
-  return;
+  return
   const upipe = event.created_entity
   const isGhost = upipe.type === 'entity-ghost'
   const utype = !isGhost ? upipe.type : upipe.ghost_type

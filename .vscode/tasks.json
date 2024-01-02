@@ -4,9 +4,8 @@
     {
       "type": "npm",
       "script": "dev",
-      "path": "shenanigans",
       "problemMatcher": [],
-      "label": "npm: dev - shenanigans",
+      "label": "npm: dev",
       "detail": "tsx scripts/prebuild && tstl --watch",
       "runOptions": {
         "runOn": "folderOpen"

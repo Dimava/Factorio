@@ -1,4 +1,4 @@
-import type { LuaControl, LuaEntity } from 'factorio:runtime'
+import type { LuaEntity } from 'factorio:runtime'
 
 export function logs(...a: any[]) {
   game.print(a.map((e) => {

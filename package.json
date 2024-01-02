@@ -7,9 +7,17 @@
   "license": "ISC",
   "keywords": [],
   "scripts": {
-    "lint": "eslint --cache --fix"
+    "lint": "eslint --fix .",
+    "dev": "tsx scripts/prebuild && tstl --watch"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "latest"
+    "@antfu/eslint-config": "latest",
+    "@typescript-to-lua/language-extensions": "latest",
+    "fs-jetpack": "latest",
+    "lua-types": "latest",
+    "tsx": "latest",
+    "typed-factorio": "latest",
+    "typescript": "latest",
+    "typescript-to-lua": "latest"
   }
 }

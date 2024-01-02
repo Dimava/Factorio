@@ -3,7 +3,8 @@ export const modList = [
   'kruise-kontrol',
   'lib',
   'midpipe',
-  'mine-fill',
+  'minefill',
+  'patchmark',
   'quick-rows',
   'wide-pole',
 ]

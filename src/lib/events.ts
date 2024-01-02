@@ -1,6 +1,5 @@
 import type { CustomInputPrototype } from 'factorio:prototype'
 import type { CustomInputEvent, EventId, NthTickEventData } from 'factorio:runtime'
-import { logs } from './misc'
 
 export type eventMap = {
   [K in keyof typeof defines.events

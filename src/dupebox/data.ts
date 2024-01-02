@@ -1,4 +1,4 @@
-import type { ItemPrototype, SelectionToolPrototype, TrainStopPrototype } from 'factorio:prototype'
+import type { SelectionToolPrototype, TrainStopPrototype } from 'factorio:prototype'
 
 data.extend<TrainStopPrototype>([{
   type: 'train-stop',

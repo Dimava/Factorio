@@ -2,7 +2,6 @@
   "name": "dish",
   "license": "MIT",
   "scripts": {
-    "relink": "del-cli ./build && lnk public/info.json build",
     "build": "tstl",
     "dev": "tsx scripts/prebuild && tstl --watch"
   },

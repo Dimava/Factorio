@@ -1,5 +1,5 @@
 import type { BoolSettingDefinition } from 'factorio:settings'
-import type { CustomInputPrototype } from 'factorio:prototype'
+
 import { modList } from './mod-list'
 
 for (const mod of modList) {
@@ -8,7 +8,8 @@ for (const mod of modList) {
   data.extend<BoolSettingDefinition>([{
     type: 'bool-setting',
     name: `dish-enable-${mod}`,
-    default_value: true,
+    localized_name: `Enable ${mod} submod`,
+    default_value: false,
     setting_type: 'startup',
   }])
 }
