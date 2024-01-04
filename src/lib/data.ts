@@ -14,6 +14,7 @@ data.extend<CustomInputPrototype>([{
 
 declare global {
   interface CustomEventMap {
+    'dish-reload-control': true
     'dish-whatever': true
   }
 }

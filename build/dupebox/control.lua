@@ -26,27 +26,27 @@ Script:on(
         local player_index = ____event_0.player_index
         local ____game_get_player_result_1 = game.get_player(player_index)
         local force = ____game_get_player_result_1.force
-        local lt = Pos:from(event.area.left_top):floor()
-        local rb = Pos:from(event.area.right_bottom):floor()
+        local lt = Pos:from(event.area.left_top).floor()
+        local rb = Pos:from(event.area.right_bottom).floor()
         logs({lt = lt, rb = rb})
         event.surface.set_tiles(tilesArea(
             lt,
-            rb:setX(lt),
+            rb.setX(lt),
             "hazard-concrete-right"
         ))
         event.surface.set_tiles(tilesArea(
-            lt:add(1, 0),
-            rb:setY(lt):sub(1, 0),
+            lt.add(1, 0),
+            rb.setY(lt).sub(1, 0),
             "hazard-concrete-right"
         ))
         event.surface.set_tiles(tilesArea(
-            lt:setX(rb),
+            lt.setX(rb),
             rb,
             "hazard-concrete-right"
         ))
         event.surface.set_tiles(tilesArea(
-            lt:setY(rb):add(1, 0),
-            rb:sub(1, 0),
+            lt.setY(rb).add(1, 0),
+            rb.sub(1, 0),
             "hazard-concrete-right"
         ))
         local gate_poss = __TS__ArrayFlatMap(
@@ -76,8 +76,8 @@ Script:on(
         for ____, angle in ipairs({
             lt,
             rb,
-            lt:setX(rb),
-            lt:setY(rb)
+            lt.setX(rb),
+            lt.setY(rb)
         }) do
             local e = surface.create_entity({position = angle, name = "stone-wall", force = force})
             e.minable = false

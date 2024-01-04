@@ -72,5 +72,5 @@ function bp_size(entities: BlueprintEntity[]) {
     bottom_right: { x: x2, y: y2 },
     center: { x: (x1 + x2) / 2, y: (y1 + y2) / 2 },
     size: { x: x2 - x1, y: y2 - y1 },
-  } satisfies Record<string, { x: number; y: number }>
+  } satisfies Record<string, { x: number, y: number }>
 }

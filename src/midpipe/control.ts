@@ -2,7 +2,7 @@ import { Script } from '../lib'
 import { Pos, logs } from '../lib/misc'
 
 declare const global: {
-  pipe_lookup: Record<string, { pipe: string; upipe: string; pipe_item: string }>
+  pipe_lookup: Record<string, { pipe: string, upipe: string, pipe_item: string }>
 }
 
 Script.on('built_entity', (event) => {

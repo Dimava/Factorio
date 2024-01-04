@@ -6,6 +6,8 @@ export function logs(...a: any[]) {
       return e
     if (type(e) === 'table' && 'object_name' in e) {
       const v = e as LuaEntity
+      const pos = v.position
+      return `${v.object_name}{${v.name}@${pos.x},${pos.y}}`
       return `${v.object_name}{name:${v.name},pos:${serpent.line(v.position)}}`
     }
     return serpent.line(e)
@@ -13,7 +15,7 @@ export function logs(...a: any[]) {
 }
 
 declare global {
-  interface PosLike { readonly x: number; readonly y: number }
+  interface PosLike { readonly x: number, readonly y: number }
 }
 export class Pos {
   x: number
@@ -24,6 +26,10 @@ export class Pos {
 
   static from(pos: PosLike) {
     return new Pos(pos.x, pos.y)
+  }
+
+  static of(target: { position: PosLike }) {
+    return Pos.from(target.position)
   }
 
   rotate8(angle: number) {
@@ -56,6 +62,14 @@ export class Pos {
     return new Pos(this.x - x.x, this.y - x.y)
   }
 
+  mul(x: number, y?: number): Pos
+  mul(pos: PosLike): Pos
+  mul(x: number | PosLike, y?: number): Pos {
+    if (typeof x === 'number')
+      return new Pos(this.x * x, this.y * (y ?? x))
+    return new Pos(this.x * x.x, this.y * x.y)
+  }
+
   setX(x: number): Pos
   setX(pos: PosLike): Pos
   setX(x: number | PosLike): Pos {
@@ -80,8 +94,24 @@ export class Pos {
     return new Pos(Math.ceil(this.x), Math.ceil(this.y))
   }
 
+  tileToChunk() {
+    return this.mul(1 / 32).floor().mul(32).add(16, 16)
+  }
+
   static get north() {
     return new Pos(0, -1)
+  }
+
+  widen(dx: number, dy: number = dx) {
+    return new Area(this.sub(dx, dy), this.add(dx, dy))
+  }
+}
+
+export class Area {
+  left_top: Pos
+  right_bottom: Pos
+  constructor(l: Pos, r: Pos) {
+    this.left_top = l; this.right_bottom = r
   }
 }
 

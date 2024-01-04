@@ -20,8 +20,8 @@ class ScriptEmitter {
     const eventId = typeof event !== 'string'
       ? event
       : defines.events[`on_${event}` as 'on_tick']
-        ?? defines.events[event as 'on_tick']
-        ?? event as never as EventId<any>
+      ?? defines.events[event as 'on_tick']
+      ?? event as never as EventId<any>
     const list = this.listeners[event] ??= [] as never
     list.push(handler)
     script.on_event(eventId, (ev) => {
@@ -53,8 +53,8 @@ export const Script = new ScriptEmitter()
 type Writeable<T> = { -readonly[K in keyof T]: T[K] }
 
 type MyCustomInput = Partial<Writeable<CustomInputPrototype>> & (
-  | { name: customEventName; key_sequence: string }
-  | { name: customEventName; linked_game_control: Required<CustomInputPrototype>['linked_game_control'] }
+  | { name: customEventName, key_sequence: string }
+  | { name: customEventName, linked_game_control: Required<CustomInputPrototype>['linked_game_control'] }
 )
 
 export function addCustomInputs(prototypes: readonly MyCustomInput[]) {

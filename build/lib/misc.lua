@@ -15,7 +15,8 @@ function ____exports.logs(...)
                 end
                 if type(e) == "table" and e.object_name ~= nil then
                     local v = e
-                    return ((((v.object_name .. "{name:") .. v.name) .. ",pos:") .. serpent.line(v.position)) .. "}"
+                    local pos = v.position
+                    return ((((((v.object_name .. "{") .. v.name) .. "@") .. tostring(pos.x)) .. ",") .. tostring(pos.y)) .. "}"
                 end
                 return serpent.line(e)
             end
@@ -32,6 +33,9 @@ function Pos.prototype.____constructor(self, x, y)
 end
 function Pos.from(self, pos)
     return __TS__New(____exports.Pos, pos.x, pos.y)
+end
+function Pos.of(self, target)
+    return ____exports.Pos:from(target.position)
 end
 function Pos.prototype.rotate8(self, angle)
     if angle < 0 or angle > 8 then
@@ -62,6 +66,12 @@ function Pos.prototype.sub(self, x, y)
         return __TS__New(____exports.Pos, self.x - x, self.y - y)
     end
     return __TS__New(____exports.Pos, self.x - x.x, self.y - x.y)
+end
+function Pos.prototype.mul(self, x, y)
+    if type(x) == "number" then
+        return __TS__New(____exports.Pos, self.x * x, self.y * (y or x))
+    end
+    return __TS__New(____exports.Pos, self.x * x.x, self.y * x.y)
 end
 function Pos.prototype.setX(self, x)
     return __TS__New(
@@ -98,6 +108,19 @@ function Pos.prototype.ceil(self)
         math.ceil(self.y)
     )
 end
+function Pos.prototype.tileToChunk(self)
+    return self:mul(1 / 32):floor():mul(32):add(16, 16)
+end
+function Pos.prototype.widen(self, dx, dy)
+    if dy == nil then
+        dy = dx
+    end
+    return __TS__New(
+        ____exports.Area,
+        self:sub(dx, dy),
+        self:add(dx, dy)
+    )
+end
 __TS__ObjectDefineProperty(
     Pos,
     "north",
@@ -105,6 +128,13 @@ __TS__ObjectDefineProperty(
         return __TS__New(____exports.Pos, 0, -1)
     end}
 )
+____exports.Area = __TS__Class()
+local Area = ____exports.Area
+Area.name = "Area"
+function Area.prototype.____constructor(self, l, r)
+    self.left_top = l
+    self.right_bottom = r
+end
 function ____exports.range(min, max)
     local a = {}
     do

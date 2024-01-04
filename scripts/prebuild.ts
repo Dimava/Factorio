@@ -52,7 +52,7 @@ ${
 
 jp.copy('info.json', 'build/info.json', { overwrite: true })
 for (const m of modList) {
-  const j = jp.read('info.json', 'json') as { name: string; title: string }
+  const j = jp.read('info.json', 'json') as { name: string, title: string }
   j.name += `-${m}`
   j.title += `: ${m}`
   jp.write(`build/${m}/info.json`, j)

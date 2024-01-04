@@ -11,7 +11,7 @@
     "dev": "tsx scripts/prebuild && tstl --watch"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "latest",
+    "@antfu/eslint-config": "^2",
     "@typescript-to-lua/language-extensions": "latest",
     "fs-jetpack": "latest",
     "lua-types": "latest",
